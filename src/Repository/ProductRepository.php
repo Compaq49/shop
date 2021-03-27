@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Classe\Search;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,6 +22,27 @@ class ProductRepository extends ServiceEntityRepository
     public function findAll() 
     {
         return $this->findBy([], ['name' => 'ASC']);
+    }
+    public function findWithSearch(Search $search) 
+    {
+        $query = $this
+                ->createQueryBuilder('p')
+                ->select('c', 'p')
+                ->join('p.category', 'c')
+                ->orderBy('c.name', 'ASC')
+                ->orderBy('p.name', 'ASC');
+        if(!empty($search->categories)) {
+            $query = $query
+                    ->andWhere('c.id IN (:categories)')
+                    ->setParameter('categories', $search->categories);
+        }
+        if(!empty($search->string)) {
+            $query = $query
+                    ->andWhere('p.name LIKE :string')
+                    ->setParameter('string', "%{$search->string}%")
+                    ->orderBy('p.name', 'ASC');
+        }
+        return $query->getQuery()->getResult();
     }
 
     // /**

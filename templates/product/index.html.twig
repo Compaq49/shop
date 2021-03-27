@@ -4,6 +4,14 @@
 
 {% block body %}
     <div class="row">
+        <div class="col-md-2">
+            <h2 style="color: #00580a;">Filtrer.</h2>
+            {{ form_start(form) }}
+                {{form_row(form.string)}}
+                {{form_row(form.categories)}}
+                <input type="submit" class="btn btn-dark btn-block btn-sm" value="Rechercher">
+            {{ form_end(form) }}
+        </div>
         <div class="col-md-10">
           <div class="col-6 offset-3 mt-2 mb-5" style="color: #00580a;">
               <h2 class="text-center">Nos Produits.</h2>
