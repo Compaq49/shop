@@ -13,7 +13,7 @@
         <p style="font-size: 18px;font-weight: bold;  margin-top: 3px">Prix : {{ (product.price /100) | number_format(2, ',', '')}} €</p>
         <hr />
         <p class="text-justify">{{ product.description }}</p>
-        <a href="{#{{ path('add_to_cart', {'id' : product.id}) }}#}" class="btn btn-dark btn-sm">Ajouter au panier</a>
+        <a href="{{ path('add_to_cart', {'id' : product.id}) }}" class="btn btn-dark btn-sm">Ajouter au panier</a>
         <a href="{{ path('products') }}" class="btn btn-dark btn-sm">Tous les produits</a>
         <p></p>
     </div>
