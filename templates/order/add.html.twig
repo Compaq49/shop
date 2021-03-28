@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement de ma commande - La Boutique Française{% endblock %}
+
+{% block body %}
+        <style type="text/css">
+        .colors{
+           color:  #00580a;
+            }
+    </style>
+<h2 class="text-center colors mb-3" style=";">Ma commande.</h2>
+<p class="text-center colors">Vérifier vos informations avant le paiement.</p>
+<div class="row">
+    <div class="col-md-6 text-center">
+        <h6 class="gras gauche mt-4" style="color: #00580a;">Mon adresse de livraison.</h6> 
+        <div class="form-check mt-3">
+            <p style="text-align: left;">{{ delivery|raw }}</p>
+            </div>
+        <h6 class="gras gauche mt-3" style="color: #00580a;">Mode de livraison.</h6>
+        <div class="form-check">
+            <p class="gras gauche">{{ carrier.name }}</p>
+            <p class="gauche">{{ carrier.description }}</p><br/>
+            <h6 class="gauche">Prix : {{ (carrier.price / 100)|number_format(2, ',', '.') }} €</h6>
+        </div>
+    </div>
+    <div class="col-md-6 mt-3">
+        <p class="gras mt-2" style="color: #00580a;">Récapitulatif de ma commande.</p>
+        <div class="order-summary">
+        {% set total = null %}  
+        {% for key,product in cart %}
+            <div class="row {% if key > 0 %}mt-2{% endif %}">
+                <div class="col-2 mb-2">
+                   &nbsp;&nbsp; <img src="{{ asset('uploads/' ~  product.product.illustration) }}" alt="{{ product.product.name }}" height="60px"/>
+                </div>
+                <div class="col-7 my-auto">
+                    &nbsp;&nbsp;&nbsp;{{ product.product.name }} <br />
+                    <small> 
+                    <br />&nbsp;&nbsp;&nbsp;&nbsp;Quantité : {{ product.quantity }}
+                    <br />&nbsp;&nbsp;&nbsp;&nbsp;Prix unitaire : {{( product.product.price/100) | number_format(2, ',', '') }} € 
+                    </small>
+                </div>
+                <div class="col-3 my-auto">
+                    {{ ((product.product.price * product.quantity)/100) | number_format(2, ',', '.')}} €
+                </div>
+            </div>
+                {% set total = total + product.product.price * product.quantity %}
+        {% endfor %}
+        </div>
+        <h6 class="gras mt-5">Sous Total : {{ (total/100) | number_format(2, ',', '')}} €</h6>
+        <h6 class="gras">Livraison : {{ (carrier.price / 100)|number_format(2, ',', '.') }} €</h6>
+        <hr />
+        <h6 class="gras">Total : {{ ((total / 100) + (carrier.price / 100))|number_format(2, ',', '.') }} €</h6>
+        <a class="btn btn-dark btn-block btn-sm mt-5 mb-5" id="checkout-button">Paiement | {{ ((total / 100) + (carrier.price / 100))|number_format(2, ',', '.') }} €</a>
+    </div>
+<a href="{{ path('cart') }}" class="btn btn-dark btn-block mt-3">Retour au panier</a>
+</div>
+{% endblock %}
+
