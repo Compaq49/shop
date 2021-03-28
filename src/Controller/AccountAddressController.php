@@ -43,7 +43,12 @@ class AccountAddressController extends AbstractController
             $this->entityManager->flush();
             
             $this->addFlash('success', "L'adresse a été enregistrée en base de données.");
-            return $this->redirectToRoute('account_address');
+            
+            if($cart->get()) {
+                return $this->redirectToRoute('order');
+            } else {
+                return $this->redirectToRoute('account_address');
+            }
         }
         return $this->render('account/address_form.html.twig', [
             'form' => $form->createView(),

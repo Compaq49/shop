@@ -52,7 +52,7 @@
     <div class="text-right">
         <h6 style="font-weight: bold;color: #00580a;">Nombre de produit(s) : {{ cart | length }}</h6><br />
         <h6 style="font-weight: bold;color: #00580a;">Total du panier : {{ (total/100) | number_format(2, ',', '.')}} €</h6><br />
-        <a href="{#{{ path('order') }}#}" class="btn btn-dark btn-block mt-3">Valider le panier.</a>
+        <a href="{{ path('order') }}" class="btn btn-dark btn-block mt-3">Valider le panier.</a>
         <a href="{{ path('products') }}" class="btn btn-dark btn-block mt-3">Ajouter un autre produit dans la panier.</a>
     </div>
     {% else %}

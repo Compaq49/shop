@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Valider la commande - The Shop{% endblock %}
+
+{% block body %}
+<h2 class="text-center colors mb-5" style=";">Passer la commande.</h2>
+ <p class="text-center colors">Choisissez vos préférences avant de passer commande sur la Boutique    Française.</p>
+ <div class="row">
+    <div class="col-md-6 text-center">
+        {% set formHtml %}
+            {{ form_start(form) }}
+                {{ form_label(form.addresses, 'Votre adresse de livraison.') }}
+                <a href="{{ path('account_address_add') }}" class="btn btn-dark btn-sm">Ajouter une nouvelle adresse.</a>
+            {{ form_end(form) }}
+
+        {% endset %}
+		
+        <div style="text-align: left;">
+            {{ formHtml|replace({'[br]' : '<br />'})|raw }}
+        </div>
+
+        <b>Choisir mon transporteur</b>
+        
+    </div>
+    <div class="col-md-6 text-center">
+        <b>Récap de ma commande</b><br/>
+        <b>Bouton pour payer</b>
+    </div>
+</div>
+
+{% endblock %}
