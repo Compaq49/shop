@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes - The Shop.{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-10 offset-1" style="color: #00580a;">
+        <h2 class="text-center mb-5">Mes commandes.</h2>
+        <div class="text-center">
+            C'est dans cet espace que vous aller pouvoir gérer vos commandes. <br />
+        </div> 
+
+        <div class="col-4 offset-4" style="color: #00580a;">
+            <a href="{{ path('account') }}" class="col btn btn-dark btn-sm mt-3 mb-3">Retour</a>
+        </div>
+        {% if orders|length == 0 %}
+           <div class="text-center">     
+            {{ app.user.firstname }}, vous n'avez pas encore passé de commande sur La Boutique Française. <br />  
+           </div>
+        {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Référence</th>
+                        <th scope="col">Etat commande</th>
+                        <th scope="col">Passée le</th>
+                        <th scope="col">Produit(s)</th>
+                        <th scope="col">Total</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td><span class="badge badge-dark">{{ order.reference }}</span></td>
+                        <td>
+                        {% if order.isPaid == 1 %} 
+                            Paiement accepté
+                        {% elseif order.isPaid == 2 %} 
+                            Préparation en cours
+                        {% elseif order.isPaid == 3 %} 
+                            Livraison en cours
+                        {% endif %}
+                    </td>
+                        <td><span class="text-center">{{ order.createdAt|date('d/m/Y') }}</span></td>
+                        <td><span class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ order.orderDetails|length }}</span></td>
+                        <td>{{ (((order.carrierPrice * 100 ) + order.getTotal()) / 100) |number_format(2, ',', '.')}} €</td>
+                        <td class="text-right"><a href="{{ path('account_order_show', {'reference' : order.reference}) }}" class="btn btn-dark btn-sm">
+                                Voir ma commande</a></td>
+                    </tr>
+            {% endfor %}    
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

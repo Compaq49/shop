@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ma commandes - La Boutique Française{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-8 offset-2" style="color: #00580a;">
+    <h2>Ma commande {{ order.reference }}</h2>
+    <a href="{{ path('account_order') }}" class="btn btn-dark btn-sm">Retour</a>
+    <hr><strong></strong>
+    <strong class="gras">Statut de la commande : </strong>
+    {% if order.isPaid == 0 %}
+        Paiement refusé.
+    {% elseif order.isPaid == 1 %}
+        Paiement accepté.
+    {% elseif order.isPaid == 2 %} 
+        Préparation en cours.
+    {% elseif order.isPaid == 3 %}
+        Livraison en cours.
+    {% endif %}
+    <br/>
+    <strong class="gras">Commande passée le :</strong> {{ order.createdAt|date('d/m/Y à H') }} heures.<br/>
+    <strong class="gras">Référence de ma commande :</strong> {{ order.reference }}<br/>
+    <strong class="gras">Transporteur choisi :</strong> {{ order.carriername }} ({{ (order.carrierprice / 100)|number_format(2, ',', '.') }} €).
+    <hr>
+    <strong class="gras">Détails:</strong>
+
+    <table class="table mt-4">
+        <thead>
+        <tr>
+            <th scope="col">Produit</th>
+            <th scope="col" class="text-center">Quantité(s)</th>
+            <th scope="col" class="text-center">Prix unitaire</th>
+            <th scope="col">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in order.orderDetails %}
+        <tr>
+            <td>{{ product.product }}</td>
+            <td class="text-center">x {{ product.quantity }}</td>
+            <td class="text-center">{{ (product.price / 100)|number_format(2, ',', '.') }} €</td>
+            <td>{{ (product.total / 100)|number_format(2, ',', '.') }} €</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <hr>    
+    <div class="text-right">
+        <strong class="gras">Sous-total :</strong> {{ (order.getTotal / 100)|number_format(2, ',', '.') }} €<br/>
+        <strong class="gras">Livraison :</strong> {{ (order.carrierprice  / 100)|number_format(2, ',', '.') }} €<br/>
+        <strong class="gras">Total : </strong> {{ ((order.carrierPrice / 100) + (order.getTotal /100))|number_format(2, ',', '.') }} €
+    </div>
+    </div>
+</div>
+{% endblock %}
+
