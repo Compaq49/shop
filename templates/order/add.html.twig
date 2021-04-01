@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block javascript %}
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
+
 {% block title %}Paiement de ma commande - La Boutique Française{% endblock %}
 
 {% block body %}
@@ -18,9 +23,9 @@
             </div>
         <h6 class="gras gauche mt-3" style="color: #00580a;">Mode de livraison.</h6>
         <div class="form-check">
-            <p class="gras gauche">{{ carrier.name }}</p>
-            <p class="gauche">{{ carrier.description }}</p><br/>
-            <h6 class="gauche">Prix : {{ (carrier.price / 100)|number_format(2, ',', '.') }} €</h6>
+            <span class="gras gauche">{{ carrier.name }}.&nbsp;&nbsp;</span> <span>Prix : {{ (carrier.price)|number_format(2, ',', '.') }} €</span>
+            {#<p class="gauche text-justify">{{ carrier.description }}</p><br/>#}
+            {#<h6 class="gauche">Prix : {{ (carrier.price / 100)|number_format(2, ',', '.') }} €</h6>#}
         </div>
     </div>
     <div class="col-md-6 mt-3">
@@ -33,10 +38,10 @@
                    &nbsp;&nbsp; <img src="{{ asset('uploads/' ~  product.product.illustration) }}" alt="{{ product.product.name }}" height="60px"/>
                 </div>
                 <div class="col-7 my-auto">
-                    &nbsp;&nbsp;&nbsp;{{ product.product.name }} <br />
-                    <small> 
+                    <br />&nbsp;&nbsp;&nbsp;<span class="gras">{{ product.product.name }}</span>
+                    <small>
                     <br />&nbsp;&nbsp;&nbsp;&nbsp;Quantité : {{ product.quantity }}
-                    <br />&nbsp;&nbsp;&nbsp;&nbsp;Prix unitaire : {{( product.product.price/100) | number_format(2, ',', '') }} € 
+                    <br />&nbsp;&nbsp;&nbsp;&nbsp;Prix unitaire : {{( product.product.price/100) | number_format(2, ',', '.') }} € 
                     </small>
                 </div>
                 <div class="col-3 my-auto">
@@ -46,13 +51,47 @@
                 {% set total = total + product.product.price * product.quantity %}
         {% endfor %}
         </div>
-        <h6 class="gras mt-5">Sous Total : {{ (total/100) | number_format(2, ',', '')}} €</h6>
-        <h6 class="gras">Livraison : {{ (carrier.price / 100)|number_format(2, ',', '.') }} €</h6>
+        <h6 class="gras mt-5">Sous-Total : {{ (total/100) | number_format(2, ',', '.')}} €</h6>
+        <h6 class="gras">Livraison : {{ (carrier.price )|number_format(2, ',', '.') }} €</h6>
         <hr />
-        <h6 class="gras">Total : {{ ((total / 100) + (carrier.price / 100))|number_format(2, ',', '.') }} €</h6>
-        <a class="btn btn-dark btn-block btn-sm mt-5 mb-5" id="checkout-button">Paiement | {{ ((total / 100) + (carrier.price / 100))|number_format(2, ',', '.') }} €</a>
+        <h6 class="gras">Total : {{ ((total/100) + (carrier.price)) |number_format(2, ',', '.') }} €</h6>
+        <a class="btn btn-dark btn-block btn-sm mt-5 mb-5" id="checkout-button">Paiement | {{ ((total / 100) + (carrier.price /100))|number_format(2, ',', '.') }} €</a>
     </div>
+       
 <a href="{{ path('cart') }}" class="btn btn-dark btn-block mt-3">Retour au panier</a>
 </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+    var stripe = Stripe("pk_test_51IHbm2JCknTJLH2EWOqUxkhsHagh4alNoifUDYQFwGDoeIYc85NUmzjS6VmajN20eUkqM7iNQLcGJrdvbIAZamsC00ARPWubhd");
+    var checkoutButton = document.getElementById("checkout-button");
+    checkoutButton.addEventListener("click", function () {
+      fetch("/commande/create-session/{{ reference }}", {
+        method: "POST"
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (session) {
+            if(session.error === 'order') {
+                window.location.replace('{{ path('order') }}');
+            } else {
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            }
+        })
+        .then(function (result) {
+          // If redirectToCheckout fails due to a browser or network
+          // error, you should display the localized error message to your
+          // customer using error.message.
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+        .catch(function (error) {
+          console.error("Error:", error);
+        });
+    });
+ </script>
 {% endblock %}
 
