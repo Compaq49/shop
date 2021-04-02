@@ -44,7 +44,7 @@ class OrderCrudController extends AbstractCrudController
             ->add('detail', $updatePreparation)
             ->add('detail', $updateDelivery)
             ->add('index', 'detail')   // on ajoute le lien voir
-            ->disable(Action::EDIT, Action::DELETE); //on supprime les liens edit et supprimer
+            ->disable(Action::EDIT, Action::DELETE, Action::NEW); //on supprime les liens edit et supprimer
     }
     
     public function updatePreparation(AdminContext $context) 
