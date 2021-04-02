@@ -21,7 +21,7 @@
     <br/>
     <strong class="gras">Commande passée le :</strong> {{ order.createdAt|date('d/m/Y à H') }} heures.<br/>
     <strong class="gras">Référence de ma commande :</strong> {{ order.reference }}<br/>
-    <strong class="gras">Transporteur choisi :</strong> {{ order.carriername }} ({{ (order.carrierprice / 100)|number_format(2, ',', '.') }} €).
+    <strong class="gras">Transporteur choisi :</strong> {{ order.carriername }} ({{ (order.carrierprice)|number_format(2, ',', '.') }} €).
     <hr>
     <strong class="gras">Détails:</strong>
 
@@ -48,8 +48,8 @@
         <hr>    
     <div class="text-right">
         <strong class="gras">Sous-total :</strong> {{ (order.getTotal / 100)|number_format(2, ',', '.') }} €<br/>
-        <strong class="gras">Livraison :</strong> {{ (order.carrierprice  / 100)|number_format(2, ',', '.') }} €<br/>
-        <strong class="gras">Total : </strong> {{ ((order.carrierPrice / 100) + (order.getTotal /100))|number_format(2, ',', '.') }} €
+        <strong class="gras">Livraison :</strong> {{ (order.carrierprice)|number_format(2, ',', '.') }} €<br/>
+        <strong class="gras">Total : </strong> {{ ((order.carrierPrice) + (order.getTotal /100))|number_format(2, ',', '.') }} €
     </div>
     </div>
 </div>

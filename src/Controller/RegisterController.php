@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Classe\Mail;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,6 +40,11 @@ class RegisterController extends AbstractController
                 
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
+                
+                $mail = new Mail();
+                $content = "Bonjour ".$user->getFirstname().','."<br/>Bienvenue sur la première boutique dédiée au made in France.<br><br/>Votre inscription s'est     correctement déroulée.";
+                $mail->send($user->getEmail(), $user->getFirstname(), 'Bienvenue sur La Boutique Française', $content);
+
                 
                 $this->addFlash('success', 'Inscription validée. Vous pouvez vous connecter.');
                 return $this->redirectToRoute('home');
