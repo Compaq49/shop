@@ -9,13 +9,13 @@
     <a href="{{ path('account_order') }}" class="btn btn-dark btn-sm">Retour</a>
     <hr><strong></strong>
     <strong class="gras">Statut de la commande : </strong>
-    {% if order.isPaid == 0 %}
+    {% if order.state == 0 %}
         Paiement refusé.
-    {% elseif order.isPaid == 1 %}
+    {% elseif order.state == 1 %}
         Paiement accepté.
-    {% elseif order.isPaid == 2 %} 
+    {% elseif order.state == 2 %} 
         Préparation en cours.
-    {% elseif order.isPaid == 3 %}
+    {% elseif order.state == 3 %}
         Livraison en cours.
     {% endif %}
     <br/>

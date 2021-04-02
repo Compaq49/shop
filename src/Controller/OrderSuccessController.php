@@ -31,10 +31,11 @@ class OrderSuccessController extends AbstractController
         }
         // Vider la session cart
         $cart->remove();
-        // Modifier le statut isPaid de notre commande en la passant à 1 
-        if(!$order->getIsPaid()) {
-            $order->setIsPaid(1);
+        // Modifier le statut Stata de notre commande en la passant à 1 
+        if($order->getState() == 0) {
+            $order->setState(1);
             $this->entityManager->flush();
+            
             $mail = new Mail();
             $content = "Bonjour ".$order->getUser()->getFirstname().','."<br/>Bienvenue sur la première boutique dédiée au made in France.<br><br/>Merci pour votre commande.";
             $mail->send($order->getUser()->getEmail(), $order->getUser()->getFirstname(), 'Votre commande sur La Boutique Française est bien validée.', $content);

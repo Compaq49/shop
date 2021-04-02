@@ -34,11 +34,11 @@
                     <tr>
                         <td><span class="badge badge-dark">{{ order.reference }}</span></td>
                         <td>
-                        {% if order.isPaid == 1 %} 
+                        {% if order.state == 1 %} 
                             Paiement accepté
-                        {% elseif order.isPaid == 2 %} 
+                        {% elseif order.state == 2 %} 
                             Préparation en cours
-                        {% elseif order.isPaid == 3 %} 
+                        {% elseif order.state == 3 %} 
                             Livraison en cours
                         {% endif %}
                     </td>

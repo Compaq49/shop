@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -26,6 +27,11 @@ class DashboardController extends AbstractDashboardController
 
         return $this->redirect($routeBuilder->setController(OrderCrudController::class)->generateUrl());
 
+    }
+    
+    public function configureAssets(): Assets
+    {
+        return Assets::new()->addCssFile('assets/css/easyadmin.css');
     }
 
     public function configureDashboard(): Dashboard
