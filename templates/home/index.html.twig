@@ -3,7 +3,17 @@
 
 {% block title %}The French Shop{% endblock %}
 {% block body %}
-    <h3 style="color: #00580a;">Nos meilleures ventes</h3>
+    <!--<h3 style="color: #00580a;">Nos meilleures ventes</h3>-->
+    <h3 class="featurette-heading" style="color: #00580a;">Nos meilleures ventes</h3>
+<p class="lead" style="color: #00580a;">Découvrez les articles les plus vendus.</p>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-3">
+                {% include 'product/single_product.html.twig' %}
+            </div>
+        {% endfor %}
+    </div>  
+
 
 <!-- START THE FEATURETTES -->
 

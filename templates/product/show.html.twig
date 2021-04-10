@@ -9,7 +9,7 @@
     </div>
     <div class="col-md-7 mt-3">
         <h2 style="color: #00580a;">{{ product.name }}.</h2>
-        <p>{{ product.subtitle }}.</p>
+        {#<p>{{ product.subtitle }}.</p>#}
         <p style="font-size: 18px;font-weight: bold;  margin-top: 3px">Prix : {{ (product.price /100) | number_format(2, ',', '')}} €</p>
         <hr />
         <p class="text-justify">{{ product.description }}</p>
@@ -22,11 +22,11 @@
 <h3 style="color: #00580a;">Nos meilleures ventes</h3>
     <p>Découvrez les articles les plus vendus.</p>
     <div class="row">
-        {#{% for product in products %}
+        {% for product in products %}
             <div class="col-md-3">
                 {% include 'product/single_product.html.twig' %}
             </div>
-        {% endfor %}#}
+        {% endfor %}
     </div>
 {% endblock %}
 
